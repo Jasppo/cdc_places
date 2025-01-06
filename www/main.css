@@ -1,0 +1,86 @@
+/* Removes padding in main; Ensures hero images covers entire main area */
+.navbar+.container-fluid>.tab-content>.tab-pane.active.html-fill-container {
+  padding: 0 !important;
+}
+
+/* Homepage - Hero image =============================================================================================================================== */
+
+.hero-wrapper {
+  /* layout */
+  height: 96vh;
+  display: flex;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+
+
+
+.hero-image {
+  /* layout */
+  height: 70vh;;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* content styling OPTIONAL*/
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5vh;
+  background-color: #ebeef2; /* Replace this with your desired color */
+  /* background styling */
+}
+
+/* Text */
+.hero-text {
+  color: #464646;
+  border-bottom: 3px solid #292929;
+  text-align: center;
+  margin-bottom: 2vh;
+}
+
+
+
+/* Hero Images Row */
+.hero-images-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Adds spacing between images */
+  margin-top: 20px; /* Adds spacing from text above */
+}
+
+/* Individual Image Box */
+.hero-image-box {
+  width: 900px; /* Fixed width */
+  height: 530px; /* Fixed height */
+  object-fit: cover; /* Ensures images fit without distortion */
+  border-radius: 8px; /* Optional: Adds rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow */
+  transition: transform 0.3s ease; /* Adds hover effect */
+}
+
+/* Hover Effect */
+.hero-image-box:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+
+/* County Global Section =============================================================================================================================== */
+
+.form-group.shiny-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bootstrap-select .dropdown-toggle .filter-option {
+  text-align: center;
+}
+
+
+/* Charts Section =============================================================================================================================== */
+
+.charts_section {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}

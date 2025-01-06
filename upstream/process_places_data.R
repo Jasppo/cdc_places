@@ -49,7 +49,9 @@ raw_data_tract <- read_csv("upstream/data/PLACES_tract_2024.csv")
 data_county <- raw_data_county %>% 
   select(-DataSource, -Data_Value_Unit,
          -Data_Value_Footnote, -Data_Value_Footnote_Symbol, -Geolocation, 
-         -CategoryID, -MeasureId)
+         -CategoryID, -MeasureId) %>% 
+  mutate(LocationName = ifelse(StateDesc == "United States", LocationName, 
+                               paste0(LocationName, " County")))
 
 
 data_tract <- raw_data_tract %>% 
@@ -69,17 +71,6 @@ measures <- data_county %>%
 
 measure_types <- unique(data_county$Data_Value_Type)
 
-t_dat <- data_county %>% 
-  filter(StateDesc == "California")
-
-t_dat2 <- t_dat %>% 
-  filter(Measure == "Cancer (non-skin) or melanoma among adults")
-
-t_dat2 %>% 
-  filter(Data_Value_Type == "Crude prevalence") %>% 
-  mutate(value = (Data_Value / 100) * TotalPop18plus)
-  View()
-
 # Loop through each to calculate state prevalence
 data_state <- lapply(states, function(x) {
   
@@ -95,13 +86,27 @@ data_state <- lapply(states, function(x) {
       
       t_dat2 %>% 
         filter(Data_Value_Type == z) %>% 
+        mutate(value = (Data_Value / 100) * TotalPop18plus) %>% 
+        group_by(Year, StateAbbr, StateDesc, Category, Measure, Data_Value_Type, 
+                 DataValueTypeID, Short_Question_Text) %>% 
+        summarise(Data_Value = sum(value), 
+                  TotalPopulation = sum(TotalPopulation),
+                  TotalPop18plus = sum(TotalPop18plus)) %>% 
+        ungroup() %>% 
+        mutate(Data_Value = 100 * Data_Value / TotalPop18plus, 
+               LocationName = x)
         
       
-    })
+    }) %>% 
+      bind_rows()
     
-  })
+  }) %>% 
+    bind_rows()
   
-})
+}) %>% 
+  bind_rows()
+
+data_county <- bind_rows(data_county, data_state)
 
 # Save Data -------------------------------------------------------------------
 
